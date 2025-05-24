@@ -1,30 +1,28 @@
 #include <stdio.h>
 #include <string.h>
 
-
 char* longestCommonPrefix(char** strs, int strsSize) {
-	   char res[] = "\0";
-	   char* res_ptr = res;
-	   char* strs_ptr = *strs;
-	   int min_strlen;
-	   int matches[strsSize-1];
-	   int min_matches = 99999999;
-	   
-	   for(int i = 0;i<strsSize-1;i++){
-	   matches[i] = 0;
-	   min_strlen = strlen(strs[i]) < strlen(strs[i+1]) ? strlen(strs[i]) : strlen(strs[i+1]);
-		   for(int j=0;j<min_strlen;j++){
-			   if(strs[i][j] == strs[i+1][j]){
-				   matches[i]++;
-			   }else{
-				   break;
-			   }
-		   }
-		   min_matches = matches[i] < matches[i+1] ? matches[i] : matches[i+1];
-	   }
-	   strncpy(res_ptr,strs_ptr,min_matches);
-		
-	   return res_ptr;
+	if (strsSize == 0) return "";
+
+	int i = 0;
+	while (1) {
+		char c = strs[0][i];
+		for (int j = 1; j < strsSize; j++) {
+			if (strs[j][i] != c || strs[j][i] == '\0') {
+				char* prefix = (char*)malloc(i + 1);
+				strncpy(prefix, strs[0], i);
+				prefix[i] = '\0';
+				return prefix;
+			}
+		}
+		if (c == '\0') break;
+		i++;
+	}
+
+	char* prefix = (char*)malloc(i + 1);
+	strncpy(prefix, strs[0], i);
+	prefix[i] = '\0';
+	return prefix;
 }
 
 int main(){
